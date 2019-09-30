@@ -154,8 +154,8 @@ class Norminette():
                 else:
                     begin_index += 1
 
-    # Check function params
-    def check_function_params(self):
+    # Check empty params
+    def check_empty_params(self):
 
         for path in self.c_file_list:
             # Read file
@@ -182,6 +182,37 @@ class Norminette():
                     print(self.red_color + path + " -> line " + str(line_index) + ": " + self.end +
                           "Your empty function must indicate void params")
 
+    # Check counts params
+    def count_params(self):
+
+        for path in self.c_file_list:
+            # Read file
+            opened_file = open(path, 'r')
+            content = opened_file.read()
+            # Get line
+            lines = content.split("\n")
+            line_index = 0
+
+            for line in lines:
+                line_index += 1
+                comma_index = 0
+                is_declaration = re.match(
+                    'void|int|char|short|long|float|double\s\(*\)', line)
+                is_contain_string = re.match('.*["]+', line)
+                is_variable = re.match('.*[=]+', line)
+                is_object_like = re.match('.*[:]+', line)
+
+                if is_declaration and not is_contain_string and not is_variable and not is_object_like:
+
+                    for occurence in line:
+
+                        if occurence == ",":
+                            comma_index += 1
+                        
+                    if comma_index > 3:
+                        print(self.red_color + path + " -> line " + str(line_index) + ": " + self.end +
+                                  "Your function cant contain more than 4 arguments ")
+
     def is_success(self):
         if self.error == 0:
             print(self.green_color + "OK" + self.end)
@@ -202,7 +233,8 @@ if __name__ == "__main__":
     norminette.check_function_namming()
     norminette.check_separation()
     norminette.check_function_max_size()
-    norminette.check_function_params()
+    norminette.check_empty_params()
+    norminette.count_params()
 
     if get_folder != '':
         norminette.is_success()
