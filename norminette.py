@@ -68,6 +68,31 @@ class Norminette():
                 print(self.red_color + path + ":" + self.end +
                       " All file and folder must respect snake case namming convention")
 
+    # Check namming with no uppercase
+    def check_separation(self):
+
+        for path in self.c_file_list:
+            # Read file
+            opened_file = open(path, 'r')
+            content = opened_file.read()
+            # Get line
+            lines = content.split("\n")
+            # Function index
+            function_index = 0
+            separation_index = 0
+
+            for line in lines:
+                is_separation = re.match('^.*', line)
+
+                if not line.strip():
+                    separation_index += 1
+
+                    if separation_index >= 2:
+                        print(self.red_color + path + ":" + self.end +
+                              "You cant use more than one separation follow each other")
+                else:
+                    separation_index = 0
+
     def is_success(self):
         if self.error == 0:
             print(self.green_color + "OK" + self.end)
@@ -85,6 +110,7 @@ if __name__ == "__main__":
     norminette.get_c_files()
     norminette.check_max_function()
     norminette.check_namming()
+    norminette.check_separation()
 
     if get_folder != '':
         norminette.is_success()
