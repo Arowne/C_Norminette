@@ -6,6 +6,23 @@ void foo_1() {
 
 void foo_2(foo) {
     printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
+    printf("foo2\n");
 }
 
 void foo_3() {

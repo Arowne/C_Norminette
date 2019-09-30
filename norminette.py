@@ -116,11 +116,43 @@ class Norminette():
                     is_contain_uppercase = re.search('[A-Z]+', line)
                     is_contain_number = re.search('[0-9]+', line)
                     is_contain_undescore = re.search('[_]+', line)
-                    
+
                     if is_contain_uppercase or (is_contain_number and not is_contain_undescore):
                         self.error += 1
-                        print(self.red_color + path + " -> line "+ str(line_index) + ": " +self.end +
-                            "All function must respect snake case namming convention")
+                        print(self.red_color + path + " -> line " + str(line_index) + ": " + self.end +
+                              "All function must respect snake case namming convention")
+
+    # Check function max size
+    def check_function_max_size(self):
+
+        for path in self.c_file_list:
+            # Read file
+            opened_file = open(path, 'r')
+            content = opened_file.read()
+            # Get line
+            lines = content.split("\n")
+            line_index = 0
+            begin_index = 0
+
+            for line in lines:
+                line_index += 1
+                is_declaration = re.match(
+                    'void|int|char|short|long|float|double\s\(*\)', line)
+                is_contain_string = re.match('.*["]+', line)
+                is_variable = re.match('.*[=]+', line)
+                is_object_like = re.match('.*[:]+', line)
+                is_end_of_function = re.match('}', line)
+
+                if is_declaration and not is_contain_string and not is_variable and not is_object_like:
+                    begin_index = 1
+                elif is_end_of_function:
+                    if begin_index > 19:
+                        self.error += 1
+                        print(self.red_color + path + " -> line " + str(line_index) + ": " + self.end +
+                            "Your function cant contain more than 20 line")
+                    begin_index = 0
+                else:
+                    begin_index += 1
 
     def is_success(self):
         if self.error == 0:
@@ -141,6 +173,7 @@ if __name__ == "__main__":
     norminette.check_files_namming()
     norminette.check_function_namming()
     norminette.check_separation()
+    norminette.check_function_max_size()
 
     if get_folder != '':
         norminette.is_success()
