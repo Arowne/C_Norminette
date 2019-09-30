@@ -149,10 +149,38 @@ class Norminette():
                     if begin_index > 19:
                         self.error += 1
                         print(self.red_color + path + " -> line " + str(line_index) + ": " + self.end +
-                            "Your function cant contain more than 20 line")
+                              "Your function cant contain more than 20 line")
                     begin_index = 0
                 else:
                     begin_index += 1
+
+    # Check function params
+    def check_function_params(self):
+
+        for path in self.c_file_list:
+            # Read file
+            opened_file = open(path, 'r')
+            content = opened_file.read()
+            # Get line
+            lines = content.split("\n")
+            line_index = 0
+
+            for line in lines:
+                line_index += 1
+                is_empty_arg = re.match(
+                    '.*\(\)', line)
+                is_contain_string = re.match('.*["]+', line)
+                is_variable = re.match('.*[=]+', line)
+                is_object_like = re.match('.*[:]+', line)
+
+                if is_empty_arg and not is_contain_string and not is_variable and not is_object_like:
+                    is_contain_uppercase = re.search('[A-Z]+', line)
+                    is_contain_number = re.search('[0-9]+', line)
+                    is_contain_undescore = re.search('[_]+', line)
+
+                    self.error += 1
+                    print(self.red_color + path + " -> line " + str(line_index) + ": " + self.end +
+                          "Your empty function must indicate void params")
 
     def is_success(self):
         if self.error == 0:
@@ -174,6 +202,7 @@ if __name__ == "__main__":
     norminette.check_function_namming()
     norminette.check_separation()
     norminette.check_function_max_size()
+    norminette.check_function_params()
 
     if get_folder != '':
         norminette.is_success()

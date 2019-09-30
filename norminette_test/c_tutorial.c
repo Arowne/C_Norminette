@@ -4,7 +4,7 @@
 #define MYNAME "Jean Michel"
 int globalVar = 100;
 
-int main()
+int main(void)
 {
 
     char my_name[100];
