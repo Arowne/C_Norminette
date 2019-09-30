@@ -57,6 +57,17 @@ class Norminette():
 
                     function_index += 1
 
+    # Check namming with no uppercase
+    def check_namming(self):
+
+        for path in self.c_file_list:
+            is_contain_uppercase = re.search('[A-Z]+', path)
+
+            if is_contain_uppercase:
+                self.error += 1
+                print(self.red_color + path + ":" + self.end +
+                      " All file and folder must respect snake case namming convention")
+
     def is_success(self):
         if self.error == 0:
             print(self.green_color + "OK" + self.end)
@@ -69,10 +80,11 @@ if __name__ == "__main__":
     except:
         print("\033[31m Please enter a folder ! \033[0m")
         get_folder = ''
-        
+
     norminette = Norminette(get_folder)
     norminette.get_c_files()
     norminette.check_max_function()
-    
+    norminette.check_namming()
+
     if get_folder != '':
         norminette.is_success()
