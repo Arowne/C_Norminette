@@ -1,18 +1,18 @@
 #include <stdio.h>
 
-void foo1() {
+void foo_1() {
     printf("foo\n");
 }
 
-void foo2(foo) {
+void foo_2(foo) {
     printf("foo2\n");
 }
 
-void foo3() {
+void foo_3() {
     printf("foo3\n");
 }
 
-void foo4() {
+void foo_4() {
     printf("foo4\n");
 }
 
